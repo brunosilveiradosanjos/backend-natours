@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const tourController = require('../controllers/tourController');
+
+// middlewere
+router.param('id', tourController.checkID);
+
 // tours
 router.route('/')
     .get(tourController.getAllTours)
