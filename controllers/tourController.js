@@ -16,6 +16,19 @@ exports.checkID = (req, res, next, val) => {
     next();
 }
 
+exports.checkBody = ({ body }, res, next) => {
+
+    if (body.name && body.duration && body.dificulty) {
+        next();
+    } else {
+        res.status(404).json({
+            status: 'fail',
+            message: 'Missing name or price'
+        })
+    }
+
+}
+
 // tours
 exports.getAllTours = (req, res) => {
     console.log(req.requestTime);
