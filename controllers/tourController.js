@@ -6,7 +6,7 @@ const tours = JSON.parse(fs.readFileSync(fileLocation));
 // middlewere
 
 exports.checkID = (req, res, next, val) => {
-    console.log(`Tour id is: ${val}`);
+    // console.log(`Tour id is: ${val}`);
     if (req.params.id * 1 > tours.length) {
         return res.status(404).json({
             status: 'fail',
@@ -31,7 +31,7 @@ exports.checkBody = ({ body }, res, next) => {
 
 // tours
 exports.getAllTours = (req, res) => {
-    console.log(req.requestTime);
+    // console.log(req.requestTime);
     res.status(200).json({
         status: 'success',
         requestedAt: req.requestTime,
@@ -53,7 +53,7 @@ exports.getOneTour = (req, res) => {
 };
 
 exports.createTour = (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     const newId = tours[tours.length - 1] + 1;
     const newTour = Object.assign({ id: newId }, req.body);
 
