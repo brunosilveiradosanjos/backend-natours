@@ -4,9 +4,7 @@ const Tour = require('../models/tourModel');
 
 // tours
 exports.getAllTours = async (req, res) => {
-
     try {
-
         const tours = await Tour.find();
         res.status(200).json({
             status: 'success',
@@ -25,9 +23,7 @@ exports.getAllTours = async (req, res) => {
 };
 
 exports.getOneTour = async (req, res) => {
-
     try {
-
         const tour = await Tour.findById(req.params.id);
         res.status(200).json({
             status: 'success',
@@ -35,7 +31,6 @@ exports.getOneTour = async (req, res) => {
                 tour
             }
         });
-
     } catch (err) {
         res.status(404).json({
             status: 'fail',
@@ -59,13 +54,28 @@ exports.createTour = async (req, res) => {
             message: `You got an error: ${err}`
         })
     }
-
 };
 
-exports.updateTour = (req, res) => {
-    res.status(200).json({})
+exports.updateTour = async (req, res) => {
+    try {
+        const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+            runValidators: true
+        });
+        res.status(200).json({
+            status: 'success',
+            data: {
+                tour
+            }
+        });
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: `Something went wrong: ${err}`
+        });
+    }
 };
 
-exports.deleteTour = (req, res) => {
+exports.deleteTour = async (req, res) => {
     res.status(204).json({})
 };
