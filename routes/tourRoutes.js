@@ -5,6 +5,8 @@ const tourController = require('../controllers/tourController');
 // middlewere
 
 // tours
+router.route('/top-5-cheap')
+    .get(tourController.aliasTopTour, tourController.getAllTours)
 router.route('/')
     .get(tourController.getAllTours)
     // .post(tourController.checkBody, tourController.createTour)
