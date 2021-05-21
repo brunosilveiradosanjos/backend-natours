@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/brunosilveiradosanjos/backend-natours#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^9.0.1",
     "eslint": "^7.26.0",
     "eslint-config-airbnb": "^18.2.1",
