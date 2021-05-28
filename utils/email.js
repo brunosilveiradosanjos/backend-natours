@@ -2,10 +2,10 @@ const nodemailer = require('nodemailer');
 
 const sendMail = async options => {
     // 1) Create a transporter
-    console.log('process.env.EMAIL_HOST', process.env.EMAIL_HOST);
-    console.log('process.env.EMAIL_PORT', process.env.EMAIL_PORT);
-    console.log('process.env.EMAIL_USERNAME', process.env.EMAIL_USERNAME);
-    console.log('process.env.EMAIL_PASSWORD', process.env.EMAIL_PASSWORD);
+    // console.log('process.env.EMAIL_HOST', process.env.EMAIL_HOST);
+    // console.log('process.env.EMAIL_PORT', process.env.EMAIL_PORT);
+    // console.log('process.env.EMAIL_USERNAME', process.env.EMAIL_USERNAME);
+    // console.log('process.env.EMAIL_PASSWORD', process.env.EMAIL_PASSWORD);
 
     const transporter = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
