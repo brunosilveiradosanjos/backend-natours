@@ -72,6 +72,8 @@ userSchema.pre('save', function (next) {
 });
 
 userSchema.methods.correctPassword = async function (candidatePassword, userPasswrod) {
+    const teste = await bcrypt.compare(candidatePassword, userPasswrod);
+    console.log(`from correctPassword candidatePassword: ${candidatePassword}, userPasswrod: ${userPasswrod}, ${teste}`);
     return await bcrypt.compare(candidatePassword, userPasswrod)
 };
 
