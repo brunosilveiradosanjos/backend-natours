@@ -30,6 +30,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.23.2",
     "express": "^4.17.1",
+    "express-rate-limit": "^5.2.6",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.7",
     "morgan": "^1.10.0",
