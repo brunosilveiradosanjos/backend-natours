@@ -1,5 +1,6 @@
 const Tour = require('../models/tourModel');
 const APIFeatures = require('../utils/apiFeatures');
+const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
 // middlewere
@@ -11,7 +12,7 @@ exports.aliasTopTour = catchAsync(async (req, res, next) => {
 })
 // tours
 
-exports.getAllTours = catchAsync(async (req, res) => {
+exports.getAllTours = catchAsync(async (req, res, next) => {
     // We need a hard copy, if we just set const queryObj = req.query then if we delete something from queyrObj we would also delete id from .query object "..." is a shortcut for destructuring
     // EXECUTE QUERY
     const features = new APIFeatures(Tour.find(), req.query)
@@ -31,8 +32,12 @@ exports.getAllTours = catchAsync(async (req, res) => {
     });
 });
 
-exports.getOneTour = catchAsync(async (req, res) => {
+exports.getOneTour = catchAsync(async (req, res, next) => {
     const tour = await Tour.findById(req.params.id);
+
+    if (!tour) {
+        return next(new AppError(`No tour found with ID: ${req.params.id}`, 404))
+    }
     res.status(200).json({
         status: 'success',
         data: {
@@ -41,7 +46,7 @@ exports.getOneTour = catchAsync(async (req, res) => {
     });
 });
 
-exports.createTour = catchAsync(async (req, res) => {
+exports.createTour = catchAsync(async (req, res, next) => {
     const newTour = await Tour.create(req.body);
     res.status(201).json({
         status: 'success',
@@ -51,7 +56,7 @@ exports.createTour = catchAsync(async (req, res) => {
     });
 });
 
-exports.updateTour = catchAsync(async (req, res) => {
+exports.updateTour = catchAsync(async (req, res, next) => {
     const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
         runValidators: true
@@ -64,8 +69,12 @@ exports.updateTour = catchAsync(async (req, res) => {
     });
 });
 
-exports.deleteTour = catchAsync(async (req, res) => {
+exports.deleteTour = catchAsync(async (req, res, next) => {
     const tour = await Tour.findByIdAndDelete(req.params.id);
+
+    if (!tour) {
+        return next(new AppError(`No tour found with ID: ${req.params.id}`, 404))
+    }
     res.status(200).json({
         status: 'success',
         data: {
@@ -74,7 +83,7 @@ exports.deleteTour = catchAsync(async (req, res) => {
     });
 });
 
-exports.getTourStats = catchAsync(async (req, res) => {
+exports.getTourStats = catchAsync(async (req, res, next) => {
     const stats = await Tour.aggregate([
         {
             $match: { ratingsAverage: { $gte: 4.5 } }
@@ -107,7 +116,7 @@ exports.getTourStats = catchAsync(async (req, res) => {
     });
 });
 
-exports.getMonthlyPlan = catchAsync(async (req, res) => {
+exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
     const year = req.params.id * 1; //2021
     const plan = await Tour.aggregate([
         {
