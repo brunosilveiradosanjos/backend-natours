@@ -7,7 +7,8 @@ const xss = require('xss-clean');
 const hpp = require('hpp')
 const tourRouter = require('./routes/tourRoutes')
 const userRouter = require('./routes/userRoutes')
-
+const AppError = require('./utils/appError')
+const globalErrorHandler = require('./controllers/errorController')
 const app = express();
 
 // 1) GLOBAL MIDDLEWARES
@@ -55,11 +56,10 @@ app.use('/api/v1/users', userRouter);
 app.use('/api/v1/tours', tourRouter);
 
 app.all('*', (req, res, next) => {
-    res.status(404).json({
-        staus: 'fail',
-        message: `Cant't find ${req.originalUrl} on this server!`
-    })
+    next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
 })
+
+app.use(globalErrorHandler);
 
 // 4) START SERVER
 
