@@ -138,11 +138,13 @@ tourSchema.pre(/^find/, function (next) {
     next();
 });
 
-tourSchema.post(/^find/, function (docs, next) {
-    console.log(`Query took ${Date.now() - this.start} milliseconds!`);
-    // console.log(docs);
+tourSchema.pre(/^find/, function (next) {
+    this.populate({
+        path: 'guides',
+        select: '-__v -passwordChangedAt'
+    });
     next();
-});
+})
 
 // AGGREGATION MIDDLEWARE
 tourSchema.pre('aggregate', function (next) {
@@ -151,6 +153,13 @@ tourSchema.pre('aggregate', function (next) {
     // console.log(this.pipeline());
     next();
 })
+
+tourSchema.post(/^find/, function (docs, next) {
+    console.log(`Query took ${Date.now() - this.start} milliseconds!`);
+    // console.log(docs);
+    next();
+});
+
 
 const Tour = mongoose.model('Tour', tourSchema);
 
