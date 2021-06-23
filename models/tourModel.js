@@ -107,7 +107,14 @@ const tourSchema = new mongoose.Schema({
             type: mongoose.Schema.ObjectId,
             ref: 'User'
         }
-    ]
+    ],
+    // Child reference
+    // reviews: [
+    //     {
+    //         type: mongoose.Schema.ObjectId,
+    //         ref: 'Review'
+    //     }
+    // ]
 }, {
     toJSON: { virtuals: true },
     toObject: { virtuals: true }
@@ -116,6 +123,13 @@ const tourSchema = new mongoose.Schema({
 // VIRTUAL PROPERTIES return duration in weeks
 tourSchema.virtual('durationWeeks').get(function () {
     return this.duration / 7
+})
+
+// Virtual populate
+tourSchema.virtual('reviews', {
+    ref: 'Review',
+    foreignField: 'tour',
+    localField: '_id'
 })
 
 // DOCUMENT MIDDLEWARE: runs berofe .save() and .create()
