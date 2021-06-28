@@ -12,6 +12,11 @@ const filterObj = (obj, ...allowedFields) => {
     return newObj;
 }
 
+exports.getMe = (req, res, next) => {
+    req.params.id = req.user.id;
+    next();
+}
+
 exports.updateMe = async (req, res, next) => {
     // 1) Create error if user POSTs passord data
     if (req.body.password || req.body.passwordConfirm) {
@@ -43,7 +48,6 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
         data: null
     })
 })
-
 
 exports.createUser = (req, res) => {
     res.status(500).json({
