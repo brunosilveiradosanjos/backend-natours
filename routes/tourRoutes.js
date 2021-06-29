@@ -8,39 +8,46 @@ const reviewRouter = require('./../routes/reviewRoutes');
 // middlewere
 
 // tours
-router.route('/top-5-cheap')
+router
+    .route('/top-5-cheap')
     .get(tourController.aliasTopTour, tourController.getAllTours)
 
-router.route('/tour-stats')
+router
+    .route('/tour-stats')
     .get(tourController.getTourStats)
 
-router.route('/monthly-plan/:id')
-    .get(tourController.getMonthlyPlan)
+router
+    .route('/monthly-plan/:id')
+    .get(
+        authController.protect,
+        authController.restrictTo('admin', 'lead-guide', 'guide'),
+        tourController.getMonthlyPlan
+    );
 
-router.route('/')
-    .get(authController.protect, tourController.getAllTours)
+router
+    .route('/')
+    .get(tourController.getAllTours)
     // .post(tourController.checkBody, tourController.createTour)
-    .post(tourController.createTour)
+    .post(
+        authController.protect,
+        authController.restrictTo('admin', 'lead-guide'),
+        tourController.createTour)
 
-router.route('/:id')
+router
+    .route('/:id')
     .get(tourController.getOneTour)
-    .post(tourController.createTour)
-    .patch(tourController.updateTour)
+    .patch(
+        authController.protect,
+        authController.restrictTo('admin', 'lead-guide'),
+        tourController.updateTour
+    )
     .delete(
         authController.protect,
         authController.restrictTo('admin', 'lead-guide'),
         tourController.deleteTour
     );
-// POST /tour/0dcv0vdSD87VDS89/reviews
-// GET  /tour/0dcv0vdSD87VDS89/reviews
+
 router.use('/:tourId/reviews', reviewRouter);
 
-// router
-//     .route('/:tourId/reviews')
-//     .post(
-//         authController.protect,
-//         authController.restrictTo('user'),
-//         reviewController.createReview
-//     )
 
 module.exports = router;
