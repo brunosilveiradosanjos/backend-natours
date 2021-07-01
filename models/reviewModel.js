@@ -35,6 +35,9 @@ reviewSchema = new mongoose.Schema({
     }
 );
 
+// each combination of user and tour shoud be always unique
+reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
+
 reviewSchema.pre(/^find/, function (next) {
     // this.populate({
     //     path: 'tour',
@@ -66,8 +69,8 @@ reviewSchema.statics.calcAverageRating = async function (tourId) {
     // console.log(`stats `, stats);
     if (stats.length > 0) {
         await Tour.findByIdAndUpdate(tourId, {
-            ratingsAverage: stats[0].nRating,
-            ratingsQuantity: stats[0].avgRating
+            ratingsAverage: stats[0].avgRating,
+            ratingsQuantity: stats[0].nRating
         });
     } else {
         await Tour.findByIdAndUpdate(tourId, {
