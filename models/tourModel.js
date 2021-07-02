@@ -166,12 +166,12 @@ tourSchema.pre(/^find/, function (next) {
 })
 
 // AGGREGATION MIDDLEWARE
-tourSchema.pre('aggregate', function (next) {
-    // adding to all aggregate middleware to auto exclude secretTour with this filter
-    this.pipeline().unshift({ $match: { secretTour: { $ne: true } } })
-    // console.log(this.pipeline());
-    next();
-})
+// tourSchema.pre('aggregate', function (next) {
+//     // adding to all aggregate middleware to auto exclude secretTour with this filter
+//     this.pipeline().unshift({ $match: { secretTour: { $ne: true } } })
+//     // console.log(this.pipeline());
+//     next();
+// })
 
 tourSchema.post(/^find/, function (docs, next) {
     console.log(`Query took ${Date.now() - this.start} milliseconds!`);
